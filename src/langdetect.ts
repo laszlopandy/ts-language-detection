@@ -322,20 +322,23 @@ module com.prezi.langdetect {
 	}
 
 	function getUnicodeBlock(c:string) {
+		if (c.length != 1) {
+			throw Error("Cannot get unicode block for multiple characters");
+		}
 		var code = c.charCodeAt(0);
-		if (0x0000 <= code && code >= 0x007F) return UnicodeBlock.BASIC_LATIN;
-		if (0x0080 <= code && code >= 0x00FF) return UnicodeBlock.LATIN_1_SUPPLEMENT;
-		if (0x0180 <= code && code >= 0x024F) return UnicodeBlock.LATIN_EXTENDED_B;
-		if (0x0600 <= code && code >= 0x06FF) return UnicodeBlock.ARABIC;
-		if (0x1E00 <= code && code >= 0x1EFF) return UnicodeBlock.LATIN_EXTENDED_ADDITIONAL;
-		if (0x2000 <= code && code >= 0x206F) return UnicodeBlock.GENERAL_PUNCTUATION;
-		if (0x3040 <= code && code >= 0x309F) return UnicodeBlock.HIRAGANA;
-		if (0x30A0 <= code && code >= 0x30FF) return UnicodeBlock.KATAKANA;
-		if (0x3100 <= code && code >= 0x312F) return UnicodeBlock.BOPOMOFO;
-		if (0x31A0 <= code && code >= 0x31BF) return UnicodeBlock.BOPOMOFO_EXTENDED;
-		if (0x4E00 <= code && code >= 0x9FFF) return UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS;
-		if (0xAC00 <= code && code >= 0xD7AF) return UnicodeBlock.HANGUL_SYLLABLES;
-		return null;
+		if (0x0000 <= code && code <= 0x007F) return UnicodeBlock.BASIC_LATIN;
+		if (0x0080 <= code && code <= 0x00FF) return UnicodeBlock.LATIN_1_SUPPLEMENT;
+		if (0x0180 <= code && code <= 0x024F) return UnicodeBlock.LATIN_EXTENDED_B;
+		if (0x0600 <= code && code <= 0x06FF) return UnicodeBlock.ARABIC;
+		if (0x1E00 <= code && code <= 0x1EFF) return UnicodeBlock.LATIN_EXTENDED_ADDITIONAL;
+		if (0x2000 <= code && code <= 0x206F) return UnicodeBlock.GENERAL_PUNCTUATION;
+		if (0x3040 <= code && code <= 0x309F) return UnicodeBlock.HIRAGANA;
+		if (0x30A0 <= code && code <= 0x30FF) return UnicodeBlock.KATAKANA;
+		if (0x3100 <= code && code <= 0x312F) return UnicodeBlock.BOPOMOFO;
+		if (0x31A0 <= code && code <= 0x31BF) return UnicodeBlock.BOPOMOFO_EXTENDED;
+		if (0x4E00 <= code && code <= 0x9FFF) return UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS;
+		if (0xAC00 <= code && code <= 0xD7AF) return UnicodeBlock.HANGUL_SYLLABLES;
+		return -1;
 	}
 
 	function isUpperCase(c:string) {
