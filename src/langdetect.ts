@@ -27,13 +27,13 @@ module com.prezi.langdetect {
 		}
 
 		appendString(str:string) {
-			this.text = this.text.replace(URL_REGEX, " ");
-			this.text = this.text.replace(MAIL_REGEX, " ");
+			str = str.replace(URL_REGEX, " ");
+			str = str.replace(MAIL_REGEX, " ");
 			// TODO: vietnamese normalization
-			// this.text = NGram.normalize_vi(this.text);
+			// str = NGram.normalize_vi(str);
 			var pre = '\0';
-			for (var i = 0; i < this.text.length && i < this.max_text_length; ++i) {
-				var c = this.text.charAt(i);
+			for (var i = 0; i < str.length && i < this.max_text_length; ++i) {
+				var c = str.charAt(i);
 				if (c != ' ' || pre != ' ') {
 					this.text += c;
 				}
