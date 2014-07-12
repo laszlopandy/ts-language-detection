@@ -3,6 +3,9 @@ ts-language-detection
 
 A TypeScript source port of Nakatani Shuyo's excellent [language detection library in Java](https://code.google.com/p/language-detection/).
 
+## Try it online
+[http://laszlopandy.github.io/ts-language-detection/](http://laszlopandy.github.io/ts-language-detection/)
+
 ## Web interface on localhost
 ```
 # install dependencies
