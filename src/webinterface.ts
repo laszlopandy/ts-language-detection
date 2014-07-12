@@ -2,12 +2,15 @@
 
 module WebInterface {
 	function main() {
-		document.body.innerHTML = "<h1>Language Detector</h1>";
+		document.body.innerHTML = '<h1 style="margin-bottom: 0;">Language Detector</h1>' +
+			'<div><a href="https://github.com/laszlopandy/ts-language-detection">https://github.com/laszlopandy/ts-language-detection</a></div>' +
+			'<div><a href="?languages=af,ar,bg,bn,cs,da,de,el,en,es,et,fa,fi,fr,gu,he,hi,hr,hu,id,it,ja,kn,ko,lt,lv,mk,ml,mr,ne,nl,no,pa,pl,pt,ro,ru,sk,sl,so,sq,sv,sw,ta,te,th,tl,tr,uk,ur,vi,zh-cn,zh-tw">Enable all supported languages</a></div>';
 
-		var match = new RegExp('languages=([a-z_,]+)').exec(window.location.search) || [];
+		var match = new RegExp('languages=([a-z-,]+)').exec(window.location.search) || [];
 		var languages = (match[1] || "en,fr,de,hu").split(',');
 
 		var status = document.createElement('div');
+		status.style.margin = '20px 0';
 		document.body.appendChild(status);
 
 		var box = document.createElement('div');
