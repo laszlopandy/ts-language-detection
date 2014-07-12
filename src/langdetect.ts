@@ -20,8 +20,10 @@ module com.prezi.langdetect {
 		private priorMap:number[] = null;
 
 		private text = "";
+		private profiles:LanguageProfiles;
 
-		constructor(private profiles:LanguageProfiles) {
+		constructor(profiles:LanguageProfiles) {
+			this.profiles = profiles;
 		}
 
 		appendString(str:string) {
