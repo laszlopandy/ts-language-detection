@@ -5,21 +5,17 @@ module CommandLine {
 
 	var fs = module.require('fs');
 	var path = module.require('path');
+	var lazy = module.require('lazy');
 
 	var languageProfiles:com.prezi.langdetect.LanguageProfiles = null;
 
 	export function main() {
-		// command.addOpt("-d", "directory", "./");
-		// command.addOpt("-a", "alpha", "" + DEFAULT_ALPHA);
-		// command.addOpt("-s", "seed", null);
-		// command.addOpt("-l", "lang", null);
-
 		var command = process.argv[2];
 		var profilesDir = process.argv[3];
 		if (command == "--detectlang") {
 			detectLang(profilesDir, process.argv.slice(4));
 		} else if (command == "--batchtest") {
-			batchTest();
+			batchTest(profilesDir, process.argv.slice(4));
 		}
 	}
 
@@ -36,9 +32,59 @@ module CommandLine {
 		}
 	}
 
-	function batchTest() {
+	function batchTest(profilesDir:string, arglist:string[]) {
+		loadProfilesFromDir(profilesDir);
+		var result:{ [s:string]:string[] } = {};
+		for (var i in arglist) {
+			var filename = arglist[i];
 
+			var stream = fs.createReadStream(path.join(__dirname, filename));
+			lazy(stream).lines.forEach(function(buffer:NodeBuffer) {
+				var line = buffer.toString('utf-8');
+				var idx = line.indexOf('\t');
+				if (idx <= 0) {
+					return;
+				}
+				var correctLang = line.substring(0, idx);
+				var text = line.substring(idx + 1);
 
+				var detector = new com.prezi.langdetect.Detector(languageProfiles);
+				detector.appendString(text);
+				var lang = detector.detect();
+				if (!(correctLang in result)) {
+					result[correctLang] = [];
+				}
+				result[correctLang].push(lang);
+			});
+
+			stream.on('end', function() {
+				var langlist = Object.keys(result).sort();
+
+				var totalCount = 0, totalCorrect = 0;
+				for (var i in langlist) {
+					var lang = langlist[i];
+					var resultCount:{ [s:string]:number } = {};
+					var count = 0;
+					var list = result[lang];
+					for (var j in list) {
+						var detectedLang = list[j];
+						++count;
+						if (detectedLang in resultCount) {
+							resultCount[detectedLang] += 1;
+						} else {
+							resultCount[detectedLang] = 1;
+						}
+					}
+					var correct = resultCount[lang] || 0;
+					var rate = correct / count;
+					console.log(lang, '(' + correct + '/' + count + '=' + rate.toFixed(2) + '):', resultCount);
+					totalCorrect += correct;
+					totalCount += count;
+				}
+				var total = totalCount == 0 ? 0 : (totalCorrect / totalCount);
+				console.log("total:", totalCorrect + '/' + totalCount, '=', total.toFixed(3));
+			});
+		}
 	}
 
 	function loadProfilesFromDir(dirname:string) {
