@@ -100,14 +100,12 @@ module com.prezi.langdetect {
 			if (ngrams.length == 0) {
 				throw new Error("no features in text");
 			}
-			
-			var langProb = [];
+			var langProb = zeroedArray(this.profiles.langList.length);
 
 			var rand = new Random();
 			for (var t = 0; t < N_TRIAL; ++t) {
 				var prob = this.initProbability();
 				var alpha = this.alpha + rand.nextGaussian() * ALPHA_WIDTH;
-
 				for (var i = 0;; ++i) {
 					var r = rand.nextInt(ngrams.length);
 					this.updateLangProb(prob, ngrams[r], alpha);
@@ -126,8 +124,8 @@ module com.prezi.langdetect {
 		}
 
 		private initProbability():number[] {
-			var prob = [];
 			var len = this.profiles.langList.length;
+			var prob = zeroedArray(len);
 			if (this.priorMap != null) {
 				for(var i = 0; i < len; ++i) {
 					prob[i] = this.priorMap[i];
@@ -201,12 +199,12 @@ module com.prezi.langdetect {
 		public static loadFromJsonStrings(jsons:string[]) {
 			var langProfiles = new LanguageProfiles();
 			for (var i in jsons) {
-				langProfiles.addJsonProfile(jsons[i], i);
+				langProfiles.addJsonProfile(jsons[i], i, jsons.length);
 			}
 			return langProfiles;
 		}
 
-		addJsonProfile(jsonString:string, index:number) {
+		addJsonProfile(jsonString:string, index:number, numProfiles:number) {
 			var profile = JSON.parse(jsonString);
 			var lang = profile.name;
 			if (this.langList.indexOf(lang) >= 0) {
@@ -215,7 +213,7 @@ module com.prezi.langdetect {
 			this.langList.push(lang);
 			for (var word in profile.freq) {
 				if (!(word in this.wordLangProbMap)) {
-					this.wordLangProbMap[word] = [];
+					this.wordLangProbMap[word] = zeroedArray(numProfiles);
 				}
 				var length = word.length;
 				if (length >= 1 && length <= 3) {
@@ -345,6 +343,14 @@ module com.prezi.langdetect {
 			return true;
 		}
 		return false;
+	}
+
+	function zeroedArray(len) {
+		var array = new Array(len);
+		for (var i = 0; i < len; i++) {
+			array[i] = 0;
+		}
+		return array;
 	}
 
 	class Random {
