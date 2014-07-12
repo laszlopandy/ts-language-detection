@@ -6,7 +6,7 @@ A TypeScript source port of Nakatani Shuyo's excellent [language detection libra
 ## Try it online
 [http://laszlopandy.github.io/ts-language-detection/](http://laszlopandy.github.io/ts-language-detection/)
 
-## Web interface on localhost
+## Setup the web interface on localhost
 ```
 # install dependencies
 npm install tsc
