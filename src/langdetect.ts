@@ -138,8 +138,8 @@ module com.prezi.langdetect {
 			return prob;
 		}
 
-		private extractNGrams(text:string) {
-			var list = [];
+		private extractNGrams(text:string):string[] {
+			var list:string[] = [];
 			var ngram = new NGram();
 			for (var i = 0; i < text.length; ++i) {
 				ngram.addChar(text.charAt(i));
@@ -348,7 +348,7 @@ module com.prezi.langdetect {
 		return false;
 	}
 
-	function zeroedArray(len) {
+	function zeroedArray(len:number):number[] {
 		var array = new Array(len);
 		for (var i = 0; i < len; i++) {
 			array[i] = 0;
@@ -365,7 +365,7 @@ module com.prezi.langdetect {
 				this.haveNextNextGaussian = false;
 				return this.nextNextGaussian;
 			} else {
-				var v1, v2, s;
+				var v1:number, v2:number, s:number;
 				do {
 					v1 = 2 * this.nextDouble() - 1;   // between -1.0 and 1.0
 					v2 = 2 * this.nextDouble() - 1;   // between -1.0 and 1.0

@@ -1,5 +1,5 @@
 module com.prezi.langdetect {
-	export var CJK_MAP = {};
+	export var CJK_MAP:{ [s:string]:string } = {};
 	var CJK_CLASSES = [
 		"\u4F7C\u6934",
 		"\u88CF\u95B2",
