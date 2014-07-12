@@ -1,4 +1,4 @@
-js-language-detection
+ts-language-detection
 =====================
 
-A JavaScript source port of Nakatani Shuyo's excellent language detection library in Java.
+A TypeScript source port of Nakatani Shuyo's excellent language detection library in Java.
