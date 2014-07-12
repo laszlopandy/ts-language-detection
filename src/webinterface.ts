@@ -73,6 +73,10 @@ module WebInterface {
 			var request = new XMLHttpRequest();
 			request.open('GET', 'profiles/' + l);
 			request.onload = function() {
+				if (request.status != 200) {
+					request.onerror(null);
+					return;
+				}
 				jsonData.push(request.responseText);
 				languagesDownloaded.push(l);
 				updateStatus();
