@@ -84,7 +84,7 @@ module com.prezi.langdetect {
 				if (p > PROB_THRESHOLD) {
 					for (var i = 0; i <= list.length; ++i) {
 						if (i == list.length || list[i].prob < p) {
-							var l = { lang: this.profiles.langList[j], prob: p };
+							var l = new LangProbability(this.profiles.langList[j], p);
 							list.splice(i, 0, l);
 							break;
 						}
@@ -185,9 +185,13 @@ module com.prezi.langdetect {
 		}
 	}
 
-	export interface LangProbability {
-		lang:string;
-		prob:number;
+	export class LangProbability {
+		constructor(public lang:string, public prob:number) {
+		}
+
+		public toString() {
+			return '<' + this.lang + ': ' + this.prob + '>';
+		}
 	}
 
 	export class LanguageProfiles {
