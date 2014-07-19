@@ -30,7 +30,7 @@ function updateUI(disable, correct, suggestions) {
 
 updateUI(true);
 
-var language_list = ['en_US', 'de_DE'];
+var language_list = ['en_US', 'de_DE', 'es_ES', 'fr_FR', 'hu_HU', 'nl_NL'];
 language_list.forEach(function(x) {
 	var o = new Option(x, x);
 	$('lang_select').add(o);
