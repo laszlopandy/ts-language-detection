@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "lazy": "1.0.11",
+        "google-closure-compiler": "20180101.0.0",
+        "@types/node": "6.0.68"
+    },
+    "scripts": {
+        "install-web": "tsc && ./concatenate.sh build/ts/webinterface.js build/web.js"
+    }
+}

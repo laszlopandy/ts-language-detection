@@ -4,9 +4,9 @@
         "types": [
             "node"
         ],
-        "outFile": "commandline.js"
+        "outDir": "build/ts"
     },
-    "files": [
-        "src/commandline.ts"
+    "include": [
+        "src/**.ts"
     ]
 }
