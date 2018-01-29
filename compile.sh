@@ -1,2 +1,2 @@
-npm install lazy
-tsc --target ES5 --out commandline.js src/commandline.ts
+npm install lazy @types/node@6.0.68
+tsc

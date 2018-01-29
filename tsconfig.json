@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "types": [
+            "node"
+        ],
+        "outFile": "commandline.js"
+    },
+    "files": [
+        "src/commandline.ts"
+    ]
+}

@@ -1,4 +1,3 @@
-/// <reference path="node.d.ts" />
 /// <reference path="langdetect.ts" />
 
 module CommandLine {

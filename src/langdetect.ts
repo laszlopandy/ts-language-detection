@@ -12,9 +12,9 @@ module com.prezi.langdetect {
 
 	var URL_REGEX = new RegExp("https?://[-_.?&~;+=/#0-9A-Za-z]{1,2076}", 'g');
 	var MAIL_REGEX = new RegExp("[-_.0-9A-Za-z]{1,64}@[-_0-9A-Za-z]{1,255}[-_.0-9A-Za-z]{1,255}", 'g');
-	
+
 	export class Detector {
-		
+
 		private alpha = ALPHA_DEFAULT;
 		private max_text_length = 10000;
 		private priorMap:number[] = null;
@@ -198,9 +198,9 @@ module com.prezi.langdetect {
 
 		public static loadFromJsonStrings(jsons:string[]) {
 			var langProfiles = new LanguageProfiles();
-			for (var i in jsons) {
-				langProfiles.addJsonProfile(jsons[i], i, jsons.length);
-			}
+			jsons.forEach((json: string, index: number) => {
+				langProfiles.addJsonProfile(json, index, jsons.length);
+			});
 			return langProfiles;
 		}
 
@@ -258,7 +258,7 @@ module com.prezi.langdetect {
 			if (this.capitalword_) {
 				return null;
 			}
-			var len = this.grams_.length; 
+			var len = this.grams_.length;
 			if (n < 1 || n > 3 || len < n) {
 				return null;
 			}
