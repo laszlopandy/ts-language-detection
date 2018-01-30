@@ -128,14 +128,14 @@ var CJK_CLASSES = [
 ];
 
 function initialize() {
-	let CJK_MAP = {};
+	let map: { [key: string]: string } = {};
 	for (let cjk_list of CJK_CLASSES) {
 		var representative = cjk_list.charAt(0);
 		for (var i = 0; i < cjk_list.length; ++i) {
-			CJK_MAP[cjk_list.charAt(i)] = representative;
+			map[cjk_list.charAt(i)] = representative;
 		}
 	}
-	return CJK_MAP;
+	return map;
 }
 
 export const CJK_MAP:{ [s:string]:string } = initialize();

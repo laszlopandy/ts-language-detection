@@ -1,5 +1,10 @@
 {
     "compilerOptions": {
+        "noImplicitAny": true,
+		"strictNullChecks": true,
+		"noImplicitThis": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
         "target": "es5",
         "types": [
             "node"

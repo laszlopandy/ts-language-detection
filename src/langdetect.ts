@@ -16,12 +16,12 @@ export class Detector {
 
 	private alpha = ALPHA_DEFAULT;
 	private max_text_length = 10000;
-	private priorMap:number[] = null;
+	private priorMap: Array<number> | null = null;
 
 	private text = "";
-	private profiles:LanguageProfiles;
+	private profiles: LanguageProfiles;
 
-	constructor(profiles:LanguageProfiles) {
+	constructor(profiles: LanguageProfiles) {
 		this.profiles = profiles;
 	}
 
@@ -253,7 +253,7 @@ class NGram {
 		}
 	}
 
-	public get(n:number):string {
+	public get(n: number): string | null {
 		if (this.capitalword_) {
 			return null;
 		}

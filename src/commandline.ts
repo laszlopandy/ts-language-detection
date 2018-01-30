@@ -4,8 +4,6 @@ const lazy = module.require("lazy");
 
 import { Detector, LanguageProfiles } from "./langdetect";
 
-var languageProfiles: LanguageProfiles = null;
-
 export function main() {
 	var command = process.argv[2];
 	var profilesDir = process.argv[3];
@@ -17,7 +15,7 @@ export function main() {
 }
 
 function detectLang(profilesDir:string, files:string[]) {
-	loadProfilesFromDir(profilesDir);
+	const languageProfiles = loadProfilesFromDir(profilesDir);
 
 	for (var i in files) {
 		var filename = files[i];
@@ -30,7 +28,7 @@ function detectLang(profilesDir:string, files:string[]) {
 }
 
 function batchTest(profilesDir:string, arglist:string[]) {
-	loadProfilesFromDir(profilesDir);
+	const languageProfiles = loadProfilesFromDir(profilesDir);
 	var result:{ [s:string]:string[] } = {};
 	for (var i in arglist) {
 		var filename = arglist[i];
@@ -95,7 +93,7 @@ function loadProfilesFromDir(dirname:string) {
 		profiles.push(data);
 	}
 
-	languageProfiles = LanguageProfiles.loadFromJsonStrings(profiles);
+	return LanguageProfiles.loadFromJsonStrings(profiles);
 }
 
 main();
