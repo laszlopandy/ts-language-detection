@@ -1,4 +1,4 @@
-import { Detector, LanguageProfiles } from "./langdetect";
+import { Detector, createDetector } from "./langdetect";
 
 function main() {
 	document.body.innerHTML = '<h1 style="margin-bottom: 0;">Language Detector</h1>' +
@@ -33,11 +33,7 @@ function main() {
 	detectButton.disabled = true;
 	box.appendChild(detectButton);
 	detectButton.addEventListener('click', function() {
-		if (loadedLangProfiles == null) {
-			return;
-		}
-
-		const detector = new Detector(loadedLangProfiles);
+		const detector = createDetector(jsonData);
 		detector.appendString(textarea.value);
 		const probs = detector.getProbabilities();
 		console.log(probs.toString());
@@ -51,7 +47,6 @@ function main() {
 
 	const languagesDownloaded: Array<string> = [];
 	const languagesFailed: Array<string> = [];
-	var loadedLangProfiles: LanguageProfiles | null = null;
 	var jsonData: Array<string> = [];
 
 	function updateStatus() {
@@ -66,10 +61,7 @@ function main() {
 		}
 		else {
 			status.textContent = "Language profiles loaded: " + "[" + languages + "]";
-			if (loadedLangProfiles == null) {
-				loadedLangProfiles = LanguageProfiles.loadFromJsonStrings(jsonData);
-				detectButton.disabled = false;
-			}
+			detectButton.disabled = false;
 		}
 	}
 	updateStatus();

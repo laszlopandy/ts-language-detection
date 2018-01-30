@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 const lazy = module.require("lazy");
 
-import { Detector, LanguageProfiles } from "./langdetect";
+import { Detector, createDetector } from "./langdetect";
 
 export function main() {
 	var command = process.argv[2];
@@ -21,7 +21,7 @@ function detectLang(profilesDir:string, files:string[]) {
 		var filename = files[i];
 		var data = fs.readFileSync(path.join(__dirname, filename), {encoding:'utf-8'});
 
-		var detector = new Detector(languageProfiles);
+		var detector = createDetector(languageProfiles);
 		detector.appendString(data);
 		console.log(filename + ":" + detector.getProbabilities());
 	}
@@ -43,7 +43,7 @@ function batchTest(profilesDir:string, arglist:string[]) {
 			var correctLang = line.substring(0, idx);
 			var text = line.substring(idx + 1);
 
-			var detector = new Detector(languageProfiles);
+			var detector = createDetector(languageProfiles);
 			detector.appendString(text);
 			var lang = detector.detect();
 			if (!(correctLang in result)) {
@@ -82,7 +82,7 @@ function batchTest(profilesDir:string, arglist:string[]) {
 	}
 }
 
-function loadProfilesFromDir(dirname:string) {
+function loadProfilesFromDir(dirname:string): Array<string> {
 	var profilesDir = path.join(__dirname, dirname);
 	console.log("Loading profiles from", profilesDir);
 	var files = fs.readdirSync(profilesDir);
@@ -93,7 +93,7 @@ function loadProfilesFromDir(dirname:string) {
 		profiles.push(data);
 	}
 
-	return LanguageProfiles.loadFromJsonStrings(profiles);
+	return profiles;
 }
 
 main();

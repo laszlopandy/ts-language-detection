@@ -12,7 +12,7 @@ const N_TRIAL = 7;
 const URL_REGEX = new RegExp("https?://[-_.?&~;+=/#0-9A-Za-z]{1,2076}", 'g');
 const MAIL_REGEX = new RegExp("[-_.0-9A-Za-z]{1,64}@[-_0-9A-Za-z]{1,255}[-_.0-9A-Za-z]{1,255}", 'g');
 
-export class Detector {
+class DetectorImpl implements Detector {
 
 	private alpha = ALPHA_DEFAULT;
 	private max_text_length = 10000;
@@ -83,7 +83,7 @@ export class Detector {
 			if (p > PROB_THRESHOLD) {
 				for (var i = 0; i <= list.length; ++i) {
 					if (i == list.length || list[i].prob < p) {
-						var l = new LangProbability(this.profiles.langList[j], p);
+						var l = new LangProbabilityImpl(this.profiles.langList[j], p);
 						list.splice(i, 0, l);
 						break;
 					}
@@ -109,7 +109,7 @@ export class Detector {
 				var r = rand.nextInt(ngrams.length);
 				this.updateLangProb(prob, ngrams[r], alpha);
 				if (i % 5 == 0) {
-					if (Detector.normalizeProb(prob) > CONV_THRESHOLD || i >= ITERATION_LIMIT) {
+					if (normalizeProb(prob) > CONV_THRESHOLD || i >= ITERATION_LIMIT) {
 						break;
 					}
 				}
@@ -166,23 +166,24 @@ export class Detector {
 		return true;
 	}
 
-	private static normalizeProb(prob:number[]):number {
-		var maxp = 0, sump = 0;
-		for (var i = 0; i < prob.length; ++i) {
-			sump += prob[i];
-		}
-		for (var i = 0; i < prob.length; ++i) {
-			var p = prob[i] / sump;
-			if (maxp < p) {
-				maxp = p;
-			}
-			prob[i] = p;
-		}
-		return maxp;
-	}
 }
 
-export class LangProbability {
+function normalizeProb(prob:number[]):number {
+	var maxp = 0, sump = 0;
+	for (var i = 0; i < prob.length; ++i) {
+		sump += prob[i];
+	}
+	for (var i = 0; i < prob.length; ++i) {
+		var p = prob[i] / sump;
+		if (maxp < p) {
+			maxp = p;
+		}
+		prob[i] = p;
+	}
+	return maxp;
+}
+
+class LangProbabilityImpl implements LangProbability {
 	constructor(public lang:string, public prob:number) {
 	}
 
@@ -191,7 +192,7 @@ export class LangProbability {
 	}
 }
 
-export class LanguageProfiles {
+class LanguageProfiles {
 	langList:string[] = [];
 	wordLangProbMap:{ [word:string]: number[] } = {};
 
@@ -383,4 +384,19 @@ class Random {
 	public nextInt(max:number):number {
 		return Math.floor(Math.random() * max);
 	}
+}
+
+export interface LangProbability {
+	lang: string;
+	prob: number;
+}
+
+export interface Detector {
+	appendString(text: string): void;
+	detect(): string;
+	getProbabilities(): Array<LangProbability>;
+}
+
+export function createDetector(profiles: Array<string>): Detector {
+	return new DetectorImpl(LanguageProfiles.loadFromJsonStrings(profiles));
 }
