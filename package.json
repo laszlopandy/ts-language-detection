@@ -11,7 +11,7 @@
     },
     "scripts": {
         "install": "npm run build-require",
-        "build-demo": "tsc && ./concatenate.sh build/ts/webinterface.js build/web.js",
-        "build-require": "tsc && ./concatenate.sh build/ts/require-entry.js build/langdetect.js"
+        "build-demo": "tsc && node concatenate.js build/ts/webinterface.js build/web.js",
+        "build-require": "tsc && node concatenate.js build/ts/require-entry.js build/langdetect.js"
     }
 }
