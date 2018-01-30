@@ -1,5 +1,6 @@
 {
     "name": "ts-language-detection",
+    "version": "1.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/laszlopandy/ts-language-detection.git"
