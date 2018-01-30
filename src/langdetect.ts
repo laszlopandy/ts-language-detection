@@ -196,17 +196,9 @@ class LanguageProfiles {
 	langList:string[] = [];
 	wordLangProbMap:{ [word:string]: number[] } = {};
 
-	public static loadFromJsonStrings(jsons:string[]) {
-		var langProfiles = new LanguageProfiles();
-		jsons.forEach((json: string, index: number) => {
-			langProfiles.addJsonProfile(json, index, jsons.length);
-		});
-		return langProfiles;
-	}
-
 	addJsonProfile(jsonString:string, index:number, numProfiles:number) {
-		var profile = JSON.parse(jsonString);
-		var lang = profile.name;
+		const profile: Profile = parseProfile(jsonString);
+		const lang = profile.name;
 		if (this.langList.indexOf(lang) >= 0) {
 			throw new Error("duplicate the same language profile");
 		}
@@ -305,7 +297,7 @@ class NGram {
 
 }
 
-enum UnicodeBlock {
+const enum UnicodeBlock {
 	BASIC_LATIN,
 	LATIN_1_SUPPLEMENT,
 	LATIN_EXTENDED_B,
@@ -386,6 +378,29 @@ class Random {
 	}
 }
 
+function loadFromJsonStrings(jsons: Array<string>) {
+	var langProfiles = new LanguageProfiles();
+	jsons.forEach((json: string, index: number) => {
+		langProfiles.addJsonProfile(json, index, jsons.length);
+	});
+	return langProfiles;
+}
+
+function parseProfile(data: string): Profile {
+	const json = JSON.parse(data);
+	return {
+		name: json['name'],
+		freq: json['freq'],
+		n_words: json['n_words'],
+	}
+}
+
+interface Profile {
+	name: string,
+	freq: { [word: string]: number },
+	n_words: Array<number>
+}
+
 export interface LangProbability {
 	lang: string;
 	prob: number;
@@ -398,5 +413,5 @@ export interface Detector {
 }
 
 export function createDetector(profiles: Array<string>): Detector {
-	return new DetectorImpl(LanguageProfiles.loadFromJsonStrings(profiles));
+	return new DetectorImpl(loadFromJsonStrings(profiles));
 }

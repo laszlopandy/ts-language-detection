@@ -2,9 +2,9 @@
 import * as langdetect from "./langdetect";
 
 declare global {
-    function define(name: string, deps: Array<string>, factory: () => any): void;
+    function define(deps: Array<string>, factory: () => any): void;
 }
 
-define("langdetect", [], () => {
+define([], () => {
     return langdetect;
 });
