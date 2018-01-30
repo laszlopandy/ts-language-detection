@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+		"strictNullChecks": true,
+		"noImplicitThis": true,
+		"noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "declaration": true,
+        "target": "es5",
+        "types": [
+            "node"
+        ],
+        "declarationDir": "build/dts",
+        "outDir": "build/ts"
+    },
+    "include": [
+        "src/**.ts"
+    ]
+}
