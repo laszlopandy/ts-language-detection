@@ -28,8 +28,7 @@ class DetectorImpl implements Detector {
 	appendString(str:string) {
 		str = str.replace(URL_REGEX, " ");
 		str = str.replace(MAIL_REGEX, " ");
-		// TODO: vietnamese normalization
-		// str = NGram.normalize_vi(str);
+		str = NGram.normalize_vi(str);
 		var pre = '\0';
 		for (var i = 0; i < str.length && i < this.max_text_length; ++i) {
 			var c = str.charAt(i);
@@ -219,6 +218,9 @@ class LanguageProfiles {
 class NGram {
 	static N_GRAM = 3;
 	static LATIN1_EXCLUDED = "\u00A0\u00AB\u00B0\u00BB";
+	static VI_NORMALIZED: string[] = ['\u00C0\u00C8\u00CC\u00D2\u00D9\u1EF2\u00E0\u00E8\u00EC\u00F2\u00F9\u1EF3\u1EA6\u1EC0\u1ED2\u1EA7\u1EC1\u1ED3\u1EB0\u1EB1\u1EDC\u1EDD\u1EEA\u1EEB', '\u00C1\u00C9\u00CD\u00D3\u00DA\u00DD\u00E1\u00E9\u00ED\u00F3\u00FA\u00FD\u1EA4\u1EBE\u1ED0\u1EA5\u1EBF\u1ED1\u1EAE\u1EAF\u1EDA\u1EDB\u1EE8\u1EE9', '\u00C3\u1EBC\u0128\u00D5\u0168\u1EF8\u00E3\u1EBD\u0129\u00F5\u0169\u1EF9\u1EAA\u1EC4\u1ED6\u1EAB\u1EC5\u1ED7\u1EB4\u1EB5\u1EE0\u1EE1\u1EEE\u1EEF', '\u1EA2\u1EBA\u1EC8\u1ECE\u1EE6\u1EF6\u1EA3\u1EBB\u1EC9\u1ECF\u1EE7\u1EF7\u1EA8\u1EC2\u1ED4\u1EA9\u1EC3\u1ED5\u1EB2\u1EB3\u1EDE\u1EDF\u1EEC\u1EED', '\u1EA0\u1EB8\u1ECA\u1ECC\u1EE4\u1EF4\u1EA1\u1EB9\u1ECB\u1ECD\u1EE5\u1EF5\u1EAC\u1EC6\u1ED8\u1EAD\u1EC7\u1ED9\u1EB6\u1EB7\u1EE2\u1EE3\u1EF0\u1EF1'];
+	static VI_ALPHABET: string = 'AEIOUYaeiouy\u00c2\u00ca\u00d4\u00e2\u00ea\u00f4\u0102\u0103\u01a0\u01a1\u01af\u01b0';
+	static VI_DIACRITICAL_MARK: string = '\u0300\u0301\u0303\u0309\u0323';
 
 	private grams_ = ' ';
 	private capitalword_ = false;
@@ -295,6 +297,21 @@ class NGram {
 		return ch;
 	}
 
+	static normalize_vi(ch:string): string {
+		var r: string = '';
+
+		var e: RegExp = new RegExp('([' + NGram.VI_ALPHABET + '])([' + NGram.VI_DIACRITICAL_MARK + '])', 'g');
+		var m: RegExpExecArray | null;
+
+		while((m = e.exec(ch)) != null) {
+			r += ch.substr(0, m.index) + NGram.VI_NORMALIZED[NGram.VI_DIACRITICAL_MARK.indexOf(m[2])].charAt(NGram.VI_ALPHABET.indexOf(m[1]));
+			ch = ch.substr(e.lastIndex);
+		}
+
+		r += ch;
+
+		return r;
+	}
 }
 
 const enum UnicodeBlock {
