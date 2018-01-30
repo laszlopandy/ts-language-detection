@@ -5,6 +5,8 @@
         "@types/node": "6.0.68"
     },
     "scripts": {
-        "install-web": "tsc && ./concatenate.sh build/ts/webinterface.js build/web.js"
+        "install": "npm run build-require",
+        "build-demo": "tsc && ./concatenate.sh build/ts/webinterface.js build/web.js",
+        "build-require": "tsc && ./concatenate.sh build/ts/require-entry.js build/langdetect.js"
     }
 }
