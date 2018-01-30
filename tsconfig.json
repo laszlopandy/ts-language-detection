@@ -7,9 +7,6 @@
         "noFallthroughCasesInSwitch": true,
         "declaration": true,
         "target": "es5",
-        "types": [
-            "node"
-        ],
         "declarationDir": "build/dts",
         "outDir": "build/ts"
     },
