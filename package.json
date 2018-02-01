@@ -1,6 +1,6 @@
 {
     "name": "ts-language-detection",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "repository": {
         "type": "git",
         "url": "https://github.com/laszlopandy/ts-language-detection.git"
@@ -11,7 +11,7 @@
         "typescript": "2.4.1"
     },
     "scripts": {
-        "install": "npm run build-require",
+        "postinstall": "npm run build-require",
         "build-demo": "$(npm bin)/tsc && node concatenate.js build/ts/webinterface.js build/web.js",
         "build-require": "$(npm bin)/tsc && node concatenate.js build/ts/require-entry.js build/langdetect.js"
     }
